@@ -1,14 +1,13 @@
-# Picasa Next — Internal Test Registry / 内测发行源
+# Scrollery plugin registry
 
-本仓库是 Picasa Next **内部测试**构建的插件发行源(exotic 格式插件的签名 registry 与插件包),
-经 `raw.githubusercontent.com` 直链被内测安装包拉取。
+Official Windows x64 PSD plugin distribution:
 
-- **不是正式发行渠道**:所有工件由**内测密钥**(`release-internal-2026-07`)签名,
-  只有编译期注入了内测信任根的内测构建会接受;正式版本的信任根与发行源另行建立。
-- 布局:`exotic/v1/{index.json, index.sig, <plugin_id>.zip}`,`index.json` 由 Ed25519 签名
-  (`index.sig`),含防回滚单调序号与有效期。
-- 更新方式:由私有仓 `scripts/exotic-internal-registry.mjs` 重新生成三件套后推送到本仓。
+- Registry: https://raw.githubusercontent.com/gfgjs/scrollery-registry/main/prod/exotic/v1/index.json
+- Plugin 1.0.5 and corresponding source: https://github.com/gfgjs/scrollery-registry/releases/tag/psd-1.0.5-1792257889
+- Application source: https://github.com/gfgjs/scrollery
 
-This repository hosts the **internal-testing** plugin registry for Picasa Next.
-Artifacts are signed with internal test keys only and are rejected by any build
-that does not embed the internal trust root. Not a production distribution channel.
+The official registry is a single JSON file. Plugin packages are immutable Release assets with explicit version and sequence numbers. The current worker uses protocol 3. Plugins do not require public/private keys or signature files; the host checks HTTPS, sizes, SHA-256 digests, paths, protocol, expiry and sequence.
+
+The current index expires at 2026-12-17T01:25:04+08:00. Renew the index before expiry, increasing its sequence. Keep the package URL, bytes and package sequence unchanged when only renewing the index.
+
+`exotic/v1/` contains obsolete internal-test artifacts; it is not the official source. Current builds use `prod/exotic/v1/`.
